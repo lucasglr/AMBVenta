@@ -127,7 +127,7 @@ class Cliente {
         idcliente DESC";
         $resultado = $mysqli->query($sql);
 
-        if($resultado){
+        if($resultado){https://github.com/lucasglr/AMBVenta.git
             while ($fila = $resultado->fetch_assoc()) {
                 $obj = new Cliente();
                 $obj->idcliente = $fila["idcliente"];
