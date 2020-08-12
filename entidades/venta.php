@@ -162,7 +162,37 @@ class Ventas {
         }
     }
 
+    public function obtenerFacturacionMensual($mes){
+            $total_mensual = "";
+            $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
+            $sql = "SELECT SUM(total) AS total_mensual
+                    FROM ventas
+                    WHERE MONTH(fecha) = $mes;";
+            if (!$resultado = $mysqli->query($sql)) {
+                printf("Error en query: %s\n", $mysqli->error . " " . $sql);
+            }
+            //Convierte el resultado en un array asociativo
+            if($fila = $resultado->fetch_assoc()){
+                $total_mensual = $fila["total_mensual"];
+            }
+            return $total_mensual;
+            $mysqli->close();
+        
+        
+    }
+    public function obtenerFacturacionAnual($anio){
+        $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
+        $sql = "SELECT SUM(total) AS total FROM ventas WHERE YEAR(fecha) = '$anio'";
+        if (!$resultado = $mysqli->query($sql)) {
+            printf("Error en query: %s\n", $mysqli->error . " " . $sql);
+        }else{
+            $fila = $resultado->fetch_assoc();
+            return $fila["total"];
+            $mysqli->close();
+        }
+    }
+
+
+
 }
-
-
 ?>

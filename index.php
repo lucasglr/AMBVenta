@@ -1,4 +1,13 @@
 <?php
+  include_once "config.php";
+  include_once "entidades/venta.php";
+
+  $day= getdate();
+  $venta = new Ventas();
+
+  
+?>
+<?php
   include("header.php");
 ?>
 
@@ -18,7 +27,7 @@
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Facturación (Mensual)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo "$".number_format($venta->obtenerFacturacionAnual($day["year"]),"2",",",".");?></div>
                       </div>
                       <div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -35,7 +44,7 @@
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Facturación (Anual)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo "$".number_format($venta->obtenerFacturacionMensual($day["mon"]),"2",",",".");?></div>
                       </div>
                       <div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>

@@ -1,20 +1,33 @@
 <?php 
 
+include_once("config.php");
+include_once("entidades/usuario.php");
+
 session_start();
-$claveEncriptada =password_hash("admin123",PASSWORD_DEFAULT);
 $msg="";
 if($_POST){
-  $usuario= trim($_POST["txtNombre"]);
-  $clave= trim($_POST["txtClave"]);
+	//Comprobamos que el usuario sea admin y la clave sea admin123
+	$usuario = trim($_POST["txtNombre"]); //trim elimina espacios de los laterales
+	$clave = trim($_POST["txtClave"]);
 
-  if($usuario=="lucasglr"&& password_verify($clave,$claveEncriptada)){
-  $_SESSION["nombre"]="Lucas";
-  header("Location: index.php");
+  $entidadUsuario = new Usuario();
+  $entidadUsuario->obtenerPorUsuario($usuario); //a desarrollar
+  
 
-  }else{
-    $msg="Usuario o Clave incorrecta";
-  }
+	//Si es correcto creamos una variable de session llamada nombre y tenga el valor "Ana Valle"
+	if($entidadUsuario->verificarClave($clave, $entidadUsuario->clave)){
+    
+		$_SESSION["nombre"] = $entidadUsuario->nombre;
+
+		//Redireccionamos a la home
+		header("location:index.php");
+	} else {
+		//Si no es correcto la clave o el usuario mostrar en pantalla "Usuario o clave incorrecto"
+		$msg = "Usuario o clave incorrecto";
+	}
 }
+
+
 
 ?>
 
@@ -72,10 +85,10 @@ if($_POST){
                       </div>
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="txtNombre" name="txtNombre" aria-describedby="emailHelp" placeholder="Usuario">
+                      <input type="text" class="form-control form-control-user" id="txtNombre" name="txtNombre" aria-describedby="emailHelp" placeholder="Usuario" value="lucasglr">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="txtClave" name="txtClave" placeholder="Contraseña">
+                      <input type="password" class="form-control form-control-user" id="txtClave" name="txtClave" placeholder="Contraseña" value="admin123">
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
