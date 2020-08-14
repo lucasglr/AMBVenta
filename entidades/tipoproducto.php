@@ -26,7 +26,7 @@ class Tipoproducto{
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         //Arma la query
         $sql = "INSERT INTO tipo_productos (
-                    nombre, 
+                    nombre 
                     
                 ) VALUES (
                     '" . $this->nombre ."'
@@ -45,7 +45,7 @@ class Tipoproducto{
 
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "UPDATE tipo_productos SET
-                nombre = '".$this->nombre."',
+                nombre = '".$this->nombre."'
                 WHERE idtipoproducto = " . $this->idtipoproducto;
           
         if (!$mysqli->query($sql)) {
@@ -69,7 +69,7 @@ class Tipoproducto{
                     nombre 
                     
                 FROM tipo_productos 
-                WHERE idtipoproductos = " . $this->idtipoproductos;
+                WHERE idtipoproducto =  " . $this->idtipoproducto;
         if (!$resultado = $mysqli->query($sql)) {
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
         }
@@ -85,21 +85,21 @@ class Tipoproducto{
     }
 
     public function obtenerTodos(){
-        $aTipoProducto = null;
+        $aTipoProducto = array();
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "SELECT
-        A.idtipoproducto,
-        A.nombre,
-        
+        idtipoproducto,
+        nombre
         FROM
-        tipo_productos A
+        tipo_productos 
         ORDER BY
         idtipoproducto DESC";
-        $resultado = $mysqli->query($sql);
-
+        if (!$resultado = $mysqli->query($sql)) {
+            printf("Error en query: %s\n", $mysqli->error . " " . $sql);
+        }
         if($resultado){
             while ($fila = $resultado->fetch_assoc()) {
-                $obj = new Producto();
+                $obj = new Tipoproducto();
                 $obj->idtipoproducto = $fila["idtipoproducto"];
                 $obj->nombre = $fila["nombre"];
                 $aTipoProducto[] = $obj;

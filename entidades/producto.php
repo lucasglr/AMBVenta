@@ -25,9 +25,9 @@ class Producto{
         $this->nombre = isset($request["txtNombre"])? $request["txtNombre"] : "";
         $this->fk_idtipoproducto = isset($request["lstTipoProducto"])? $request["lstTipoProducto"]: "";
         $this->cantidad = isset($request["txtCantidad"])? $request["txtCantidad"]: "";
-        $this->precio = isset($request["lstPrecio"])? $request["lstPrecio"] : "";
+        $this->precio = isset($request["txtPrecio"])? $request["txtPrecio"] : "";
         $this->descripcion = isset($request["txtDescripcion"])? $request["txtDescripcion"] :"";
-        $this->imagen = isset($request["txtImagen"])? $request["txtImagen"]:"";
+        $this->imagen = isset($request["fileImagen"])? $request["fileImagen"]:"";
     }
     public function insertar(){
         //Instancia la clase mysqli con el constructor parametrizado
@@ -42,9 +42,9 @@ class Producto{
                     imagen
                 ) VALUES (
                     '".$this->nombre."',
-                    '. $this->fk_idtipoproducto .', 
-                    '. $this->cantidad.', 
-                    '. $this->precio .', 
+                    '". $this->fk_idtipoproducto."', 
+                    '". $this->cantidad."', 
+                    '".$this->precio."', 
                     '" . $this->descripcion ."',
                     '" . $this->imagen ."'
                 );";
@@ -102,7 +102,7 @@ class Producto{
         if($fila = $resultado->fetch_assoc()){
             $this->idproducto = $fila["idproducto"];
             $this->nombre = $fila["nombre"];
-            $this->fk_idtipoproducto= $fila["fk_idproducto"];
+            $this->fk_idtipoproducto= $fila["fk_idtipoproducto"];
             $this->cantidad = $fila["cantidad"];
             $this->precio = $fila["precio"];
             $this->descripcion = $fila["descripcion"];
@@ -113,27 +113,31 @@ class Producto{
     }
 
   public function obtenerTodos(){
-        $aProducto = null;
+        $aProducto = array();
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "SELECT
-        A.idProducto,
-        A.fk_idtipoproducto,
-        A.nombre,
-        A.cantidad,
-        A.precio
-        A.descripcion
-        A.imagen
+        idProducto,
+        fk_idtipoproducto,
+        nombre,
+        cantidad,
+        precio,
+        descripcion,
+        imagen
         FROM
-        productos A
+        productos 
         ORDER BY
-        idproductos DESC";
+        idproducto DESC";
         $resultado = $mysqli->query($sql);
+        if (!$resultado = $mysqli->query($sql)) {
+            printf("Error en query: %s\n", $mysqli->error . " " . $sql);
+        }
 
         if($resultado){
             while ($fila = $resultado->fetch_assoc()) {
+            
                 $obj = new Producto();
-                $obj->idproducto = $fila["idproducto"];
-                $obj->fk_idtipoproducto = $fila["fk_idtipodeproducto"];
+                $obj->idproducto = $fila["idProducto"];
+                $obj->fk_idtipoproducto = $fila["fk_idtipoproducto"];
                 $obj->nombre = $fila["nombre"];
                 $obj->cantidad = $fila["cantidad"];
                 $obj->precio = $fila["precio"];
@@ -146,6 +150,7 @@ class Producto{
             return $aProducto;
         }
     }
+    
 
 }
 

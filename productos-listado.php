@@ -1,3 +1,11 @@
+<?php
+include_once "config.php";
+include_once "entidades/producto.php";
+
+$producto = new Producto();
+$aProducto = $producto->obtenerTodos();
+
+?>
 
 <?php
 include_once("header.php");
@@ -24,13 +32,15 @@ include_once("header.php");
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><a href=""><i class="fas fa-search"></a></td>
-              </tr>
+              <?php if(is_array($aProducto)){ foreach($aProducto as $producto ){?>
+                <tr>
+                  <td><img src="<?php echo $producto->imagen;?>" alt="<?php echo $producto->imagen;?>"></td>
+                  <td><?php echo $producto->nombre?></td>
+                  <td><?php echo $producto->cantidad?></td>
+                  <td><?php echo '$'.number_format($producto->precio,"2",",",".");?></td>
+                  <td><a href="producto-formulario.php?id=<?php echo $producto->idproducto?>"><i class="fas fa-search"></a></td>
+                </tr>
+              <?php }}?>
             </tbody>
 
           </table>

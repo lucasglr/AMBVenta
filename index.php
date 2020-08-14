@@ -4,7 +4,7 @@
 
   $day= getdate();
   $venta = new Ventas();
-
+  $pg="Inicio";
   
 ?>
 <?php

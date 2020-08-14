@@ -100,10 +100,10 @@ if($_POST){
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="forgot-password.html">¿Olvidaste tu clave?</a>
+                    <a class="small" href="">¿Olvidaste tu clave?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="register.html">¡Crear una cuenta!</a>
+                    <a class="small" href="">¡Crear una cuenta!</a>
                   </div>
                 </div>
               </div>

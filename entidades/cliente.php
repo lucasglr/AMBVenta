@@ -93,7 +93,7 @@ class Cliente {
                         correo, 
                         fecha_nac 
                 FROM clientes 
-                WHERE idcliente = " .$this->idcliente;
+                WHERE idcliente = " . $this->idcliente;
         if (!$resultado = $mysqli->query($sql)) {
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
         }

@@ -47,7 +47,7 @@
 
                 <a class="collapse-item" href="producto-formulario.php">Nuevo productos</a>
                 <a class="collapse-item" href="productos-listado.php">Listado de productos</a>
-                <a class="collapse-item" href="tipo-producto-formulario.php">Tipos de productos</a>
+                <a class="collapse-item" href="tipoproducto.php">Tipos de productos</a>
 
               </div>
             </div>
