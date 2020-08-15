@@ -4,27 +4,44 @@ include_once "entidades/venta.php";
 include_once "entidades/cliente.php";
 include_once "entidades/producto.php";
 
-$venta = new Ventas();
+$aMsj="";
+$venta = new Venta();
 $venta->cargarFormulario($_REQUEST);
 $pg="Nueva venta";
 $cliente = new Cliente();
 $aCliente=$cliente->obtenerTodos();
 $producto= new Producto();
 $aProducto=$producto->obtenerTodos();
-$aDay = getdate();
+
 
 
 if($_POST){
-    if(isset($_GET["id"])&&$_GET["id"]>0){
+    
+    if(isset($_POST["btnGuardar"])){
+      if(isset($_GET["id"])&& $_GET['id']>0){
+        //actualizar un cliente
         $venta->actualizar();
-    }else{
-        $venta->actualizar();
+        $aMsj=array("mensaje"=>"Venta actualizada","codigo"=>"primary");
+        
+      }else{
+        //agregar un cliente
+        $venta->insertar();
+        $aMsj=array("mensaje"=>"Venta agregada","codigo"=>"success");
+        header("refresh:2; url=venta-formulario.php");
+      }
+    }elseif(isset($_POST["btnBorrar"])&&isset($_GET["id"])){
+      $venta->eliminar();
+      $aMsj=array("mensaje"=>"Venta eliminada","codigo"=>"danger");
+      header("refresh:2; url=venta-formulario.php");
     }
-}   elseif(isset($_POST["btnBorrar"])){
-        $venta->eliminar();
-}
+  
+  }
+
+
 if(isset($_GET["id"])&&$_GET["id"]=!""){
-    $venta->obtenerPorId();
+     $venta->obtenerPorId();
+  
+    
 }
 
 
@@ -39,21 +56,28 @@ if(isset($_GET["id"])&&$_GET["id"]=!""){
     </div>
     <form action="" method="post">    
         <div class="row my-3">
-            <div class="col-12 ">
+            <div class="col-6 ">
                 <a href="ventas-listado.php" class="btn btn-primary mr-2">Listado</a>
-                <a href="" class="btn btn-primary mr-2">Nuevo</a>
-                <button type="submit" class="btn btn-success mr-2">Guardar</button>
-                <button type="submit" class="btn btn-danger mr-2">Borrar</button>
+                <a href="venta-formulario.php" class="btn btn-primary mr-2">Nuevo</a>
+                <button type="submit" class="btn btn-success mr-2" name="btnGuardar">Guardar</button>
+                <button type="submit" class="btn btn-danger mr-2" name="btnBorrar">Borrar</button>
+            </div>
+            <div class="col-6">
+            <?php if($aMsj !=""):?>
+                <div class="alert alert-<?php echo $aMsj["codigo"];?>" role="alert">
+                    <?php echo $aMsj["mensaje"];?>
+                </div>
+                <?php endif;?> 
             </div>
          </div>
         <div class="row">
             <div class="col-6 form-group mt-3">
                 <label for="txtFecha">Fecha:</label>
-                <input type="date" name="txtFecha" class="form-control" value="<?php echo date('Y-m-d');?>" >
+                <input type="date" name="txtFecha" class="form-control" value="<?php  echo (isset($_GET["id"])&&$_GET["id"]=!"")?"$venta->fecha":date('Y-m-d')?>" >
             </div>
             <div class="col-6 form-group mt-3">
                 <label for="txtHora">Hora:</label>
-                <input type="time" name="txtHora" class="form-control" value="<?php echo date('H:i') ;?>">
+                <input type="time" name="txtHora" class="form-control" value="<?php echo (isset($_GET["id"])&&$_GET["id"]=!"")?"$venta->hora":date('H:i') ;?>">
             </div>
             
         </div>
@@ -63,7 +87,11 @@ if(isset($_GET["id"])&&$_GET["id"]=!""){
                 <select name="lstCliente" id="lstCliente" class="form-control">
                     <option value disabled selected>Seleccionar</option>
                     <?php foreach($aCliente as $cliente){?>
+                        <?php if($cliente->idcliente==$venta->fk_idcliente):?>
+                            <option selected value="<?php echo $venta->fk_idcliente;?>"><?php echo $cliente->nombre; ?></option>
+                        <?php else:?>
                         <option value="<?php echo $cliente->idcliente;?>"><?php echo $cliente->nombre;?></option>
+                        <?php endif;?>
                     <?php }?>
                 </select>
             </div>
@@ -72,7 +100,12 @@ if(isset($_GET["id"])&&$_GET["id"]=!""){
                 <select name="lstProducto" id="lstProducto" class="form-control">
                     <option value disabled selected>Seleccionar</option>
                     <?php foreach ($aProducto as $producto){?>
-                        <option value="<?php echo $producto->diproducto;?>"><?php echo $producto->nombre;?></option>
+                        <?php if($producto->idproducto==$venta->fk_idproducto):?>
+                            <option selected value="<?php echo $venta->fk_idproducto;?>"><?php echo $producto->nombre; ?></option>
+                        <?php else:?>
+                            <option value="<?php echo $producto->idproducto;?>"><?php echo $producto->nombre;?></option>
+                        <?php endif;?>
+                        
                     <?php } ?>
                 </select>
             </div>
@@ -80,17 +113,17 @@ if(isset($_GET["id"])&&$_GET["id"]=!""){
         <div class="row">
             <div class="col-6">
                 <label for="txtPrecioUnitario">Precio unitario:</label>
-                <input type="text" name="txtPrecioUnitario" id="txtPrecioUnitario" class="form-control" placeholder="0" value="" >
+                <input type="text" name="txtPrecioUnitario" id="txtPrecioUnitario" class="form-control" placeholder="0" value="<?php echo (isset($_GET["id"])&&$_GET["id"]=!"")?'$'.number_format($venta->preciounitario,"2",",","."):""?>" >
             </div>
             <div class="col-6">
                 <label for="txtCantidad">Cantidad:</label>
-                <input type="number" name="txtCantidad" id="txtCantidad" class="form-control" placeholder="0">
+                <input type="text" name="txtCantidad" id="txtCantidad" class="form-control" placeholder="0" value="<?php echo $venta->cantidad?>">
             </div>
         </div>
         <div class="row">
             <div class="col-6">
                 <label for="txtTotal">Total</label>
-                <input type="number" name="txtTotal" id="txtTotal" class="form-control" placeholder="0">
+                <input type="text" name="txtTotal" id="txtTotal" class="form-control" placeholder="0" value="<?php echo (isset($_GET["id"])&&$_GET["id"]=!"")?'$'.number_format($venta->total,"2",",","."):""?>">
             </div>
         </div>
     </form>

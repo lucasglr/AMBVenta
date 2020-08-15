@@ -1,6 +1,6 @@
 <?php
 
-class Ventas {
+class Venta {
     private $idventa;
     private $fk_idcliente;
     private $fk_idproducto;
@@ -39,7 +39,7 @@ class Ventas {
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         //Arma la query
         $sql = "INSERT INTO ventas (
-                    fk_idcliente
+                    fk_idcliente,
                     fk_idproducto, 
                     fecha,
                     hora, 
@@ -47,13 +47,13 @@ class Ventas {
                     preciounitario, 
                     total
                 ) VALUES (
-                    " . $this->fk_idcliente .", 
-                    " . $this->fk_idproducto .", 
+                    '" . $this->fk_idcliente ."', 
+                    '" . $this->fk_idproducto ."', 
                     '" . $this->fecha ."',
                     '" . $this->hora ."', 
-                    " . $this->cantidad .", 
-                    " . $this->preciounitario ."
-                    " . $this->total ."
+                    '" . $this->cantidad ."', 
+                    '" . $this->preciounitario ."',
+                    '" . $this->total ."'
                 );";
         //Ejecuta la query
         if (!$mysqli->query($sql)) {
@@ -69,13 +69,13 @@ class Ventas {
 
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "UPDATE ventas SET
-                fk_idproducto = ".$this->fk_idproducto.",
-                fk_idcliente = ".$this->fk_idcliente.",
+                fk_idproducto = '".$this->fk_idproducto."',
+                fk_idcliente = '".$this->fk_idcliente."',
                 fecha = '".$this->fecha."',
                 hora = '".$this->hora."',
-                cantidad = ".$this->cantidad.",
-                preciounitario =  ".$this->preciounitario."
-                total = ".$this->total."
+                cantidad = '".$this->cantidad."',
+                preciounitario =  '".$this->preciounitario."',
+                total = '".$this->total."'
                 WHERE idventa = " . $this->idventa;
           
         if (!$mysqli->query($sql)) {
@@ -97,7 +97,7 @@ class Ventas {
     public function obtenerPorId(){
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "SELECT idventa, 
-                    fk_idcliente
+                    fk_idcliente,
                     fk_idproducto, 
                     fecha,
                     hora, 
@@ -112,6 +112,7 @@ class Ventas {
 
         //Convierte el resultado en un array asociativo
         if($fila = $resultado->fetch_assoc()){
+           
             $this->idventa = $fila["idventa"];
             $this->fk_idproducto = $fila["fk_idproducto"];
             $this->fk_idcliente = $fila["fk_idcliente"];
@@ -131,25 +132,27 @@ class Ventas {
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "SELECT
         A.idventa,
-        A.fk_idcliente,
-        A.fk_idproducto, 
+        C.nombre AS cliente,
+        B.nombre AS producto, 
         A.fecha,
         A.hora, 
         A.cantidad, 
         A.preciounitario, 
         A.total
         FROM
-        ventas A
+        ventas A 
+        INNER JOIN productos B ON A.fk_idproducto = B.idproducto
+		INNER JOIN clientes C ON A.fk_idcliente = C.idcliente 
         ORDER BY
-        idventa DESC";
+        A.idventa DESC";
         $resultado = $mysqli->query($sql);
 
         if($resultado){
             while ($fila = $resultado->fetch_assoc()) {
-                $obj = new Ventas();
+                $obj = new Venta();
                 $obj->idventa = $fila["idventa"];
-                $obj->fk_idcliente = $fila["fk_idcliente"];
-                $obj->fk_idproducto = $fila["fk_idproducto"];
+                $obj->fk_idcliente = $fila["cliente"];
+                $obj->fk_idproducto = $fila["producto"];
                 $obj->fecha = $fila["fecha"];
                 $obj->hora = $fila["hora"];
                 $obj->cantidad = $fila["cantidad"];

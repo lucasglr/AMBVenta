@@ -3,7 +3,7 @@
   include_once "entidades/venta.php";
 
   $day= getdate();
-  $venta = new Ventas();
+  $venta = new Venta();
   $pg="Inicio";
   
 ?>

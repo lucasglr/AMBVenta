@@ -1,3 +1,11 @@
+<?php 
+include_once "config.php";
+include_once "entidades/venta.php";
+$venta = new Venta();
+$aVenta = $venta->obtenerTodos();
+$pg="Listado de ventas";
+?>
+
 <?php
 include_once("header.php");
 ?>
@@ -24,16 +32,19 @@ include_once("header.php");
           </tr>
         </thead>
         <tbody>
+        <?php if(is_array($aVenta)):?>
+        <?php foreach ($aVenta as $venta):?>
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <th></th>
-            <td><a href=""><i class="fas fa-search"></a></td>
+            <td><?php echo $venta->fecha;?></td>
+            <td><?php echo $venta->cantidad;?></td>
+            <td><?php echo $venta->fk_idproducto;?></td>
+            <td><?php echo $venta->fk_idcliente;?></td>
+            <th><?php echo $venta->total?></th>
+            <td><a href="venta-formulario.php?id=<?php echo $venta->idventa;?>"><i class="fas fa-search"></a></td>
           </tr>
+        <?php endforeach;?>
+        <?php endif ;?>
         </tbody>
-
       </table>
     </div>
   </div>

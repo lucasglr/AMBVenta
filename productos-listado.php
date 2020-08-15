@@ -4,7 +4,7 @@ include_once "entidades/producto.php";
 
 $producto = new Producto();
 $aProducto = $producto->obtenerTodos();
-
+$pg="Listado de productos";
 ?>
 
 <?php

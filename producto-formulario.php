@@ -7,7 +7,7 @@ $producto->cargarFormulario($_REQUEST);
 $tipoProducto = new Tipoproducto();
 $aTipoProducto=$tipoProducto->obtenerTodos();
 $aMsj=array("mensaje"=>"","codigo"=>"");
-
+$pg="Nuevo producto";
 
 if($_POST){
    
