@@ -39,7 +39,7 @@ include_once("header.php");
             <td><?php echo $venta->cantidad;?></td>
             <td><?php echo $venta->fk_idproducto;?></td>
             <td><?php echo $venta->fk_idcliente;?></td>
-            <th><?php echo $venta->total?></th>
+            <th><?php echo '$'.number_format($venta->total,"2",",",".")?></th>
             <td><a href="venta-formulario.php?id=<?php echo $venta->idventa;?>"><i class="fas fa-search"></a></td>
           </tr>
         <?php endforeach;?>

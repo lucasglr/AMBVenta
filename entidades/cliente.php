@@ -112,7 +112,7 @@ class Cliente {
     }
 
     public function obtenerTodos(){
-        $aCliente = null;
+        $aCliente = array();
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "SELECT
         A.idcliente,

@@ -12,6 +12,7 @@ $cliente = new Cliente();
 $aCliente=$cliente->obtenerTodos();
 $producto= new Producto();
 $aProducto=$producto->obtenerTodos();
+date_default_timezone_set("America/Argentina/Buenos_Aires");
 
 
 
@@ -105,8 +106,8 @@ if(isset($_GET["id"])&&$_GET["id"]=!""){
                         <?php else:?>
                             <option value="<?php echo $producto->idproducto;?>"><?php echo $producto->nombre;?></option>
                         <?php endif;?>
-                        
                     <?php } ?>
+                           
                 </select>
             </div>
         </div>
@@ -114,7 +115,7 @@ if(isset($_GET["id"])&&$_GET["id"]=!""){
             <div class="col-6">
                 <label for="txtPrecioUnitario">Precio unitario:</label>
                 <input type="text" name="txtPrecioUnitario" id="txtPrecioUnitario" class="form-control" placeholder="0" value="<?php echo (isset($_GET["id"])&&$_GET["id"]=!"")?'$'.number_format($venta->preciounitario,"2",",","."):""?>" >
-            </div>
+            </div>     
             <div class="col-6">
                 <label for="txtCantidad">Cantidad:</label>
                 <input type="text" name="txtCantidad" id="txtCantidad" class="form-control" placeholder="0" value="<?php echo $venta->cantidad?>">

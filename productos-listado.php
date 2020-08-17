@@ -5,6 +5,7 @@ include_once "entidades/producto.php";
 $producto = new Producto();
 $aProducto = $producto->obtenerTodos();
 $pg="Listado de productos";
+
 ?>
 
 <?php
@@ -32,9 +33,9 @@ include_once("header.php");
               </tr>
             </thead>
             <tbody>
-              <?php if(is_array($aProducto)){ foreach($aProducto as $producto ){?>
+              <?php if(is_array($aProducto)){ foreach($aProducto as $producto ){ ?>
                 <tr>
-                  <td><img src="<?php echo $producto->imagen;?>" alt="<?php echo $producto->imagen;?>"></td>
+                  <td><img src="<?php echo $producto->imagen;?>" alt="<?php echo $producto->imagen;?>" class="img-thumbnail"></td>
                   <td><?php echo $producto->nombre?></td>
                   <td><?php echo $producto->cantidad?></td>
                   <td><?php echo '$'.number_format($producto->precio,"2",",",".");?></td>
