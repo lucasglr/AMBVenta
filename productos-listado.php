@@ -35,7 +35,7 @@ include_once("header.php");
             <tbody>
               <?php if(is_array($aProducto)){ foreach($aProducto as $producto ){ ?>
                 <tr>
-                  <td><img src="<?php echo $producto->imagen;?>" alt="<?php echo $producto->imagen;?>" class="img-thumbnail"></td>
+                  <td><img src="<?php echo "img/".$producto->imagen;?>" alt="<?php echo $producto->imagen;?>" class="img-thumbnail" width="60px"></td>
                   <td><?php echo $producto->nombre?></td>
                   <td><?php echo $producto->cantidad?></td>
                   <td><?php echo '$'.number_format($producto->precio,"2",",",".");?></td>

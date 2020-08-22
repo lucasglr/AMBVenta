@@ -83,6 +83,11 @@ if(isset($_GET["id"])&&$_GET["id"]!=""){
         <input type="email" class="form-control" name="txtCorreo" value="<?php echo $cliente->correo;?>">
       </div>
     </div>
+    <div class="row mt-3">
+      <div class="col-12">
+          <select name="txtDomicilio" id="" class="form-control selectpicker" data-live-search="true"></select>
+      </div>
+    </div>
   </form>
 </div>
 <?php include("footer.php"); ?>

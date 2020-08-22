@@ -27,7 +27,8 @@ class Producto{
         $this->cantidad = isset($request["txtCantidad"])? $request["txtCantidad"]: "";
         $this->precio = isset($request["txtPrecio"])? $request["txtPrecio"] : "";
         $this->descripcion = isset($request["txtDescripcion"])? $request["txtDescripcion"] :"";
-        $this->imagen = isset($request["fileImagen"])? $request["fileImagen"]:"";
+        
+        
     }
     public function insertar(){
         //Instancia la clase mysqli con el constructor parametrizado
@@ -65,7 +66,8 @@ class Producto{
                 fk_idtipoproducto = '".$this->fk_idtipoproducto."',
                 cantidad = '".$this->cantidad."',
                 precio = '".$this->precio."',
-                descripcion =  '".$this->descripcion."'
+                descripcion =  '".$this->descripcion."',
+                imagen='".$this->imagen."'
                 WHERE idproducto = " . $this->idproducto;
           
         if (!$mysqli->query($sql)) {
@@ -116,7 +118,7 @@ class Producto{
         $aProducto = array();
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "SELECT
-        idProducto,
+        idproducto,
         fk_idtipoproducto,
         nombre,
         cantidad,
@@ -136,7 +138,7 @@ class Producto{
             while ($fila = $resultado->fetch_assoc()) {
             
                 $obj = new Producto();
-                $obj->idproducto = $fila["idProducto"];
+                $obj->idproducto = $fila["idproducto"];
                 $obj->fk_idtipoproducto = $fila["fk_idtipoproducto"];
                 $obj->nombre = $fila["nombre"];
                 $obj->cantidad = $fila["cantidad"];

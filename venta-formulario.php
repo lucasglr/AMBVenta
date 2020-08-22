@@ -14,8 +14,6 @@ $producto= new Producto();
 $aProducto=$producto->obtenerTodos();
 date_default_timezone_set("America/Argentina/Buenos_Aires");
 
-
-
 if($_POST){
     
     if(isset($_POST["btnGuardar"])){
@@ -36,13 +34,10 @@ if($_POST){
       header("refresh:2; url=venta-formulario.php");
     }
   
-  }
-
-
+}
 if(isset($_GET["id"])&&$_GET["id"]=!""){
      $venta->obtenerPorId();
-  
-    
+   
 }
 
 
@@ -85,29 +80,28 @@ if(isset($_GET["id"])&&$_GET["id"]=!""){
         <div class="row">
             <div class="col-6 form-group mt-1">
                 <label for="lstCliente">Cliente:</label>
-                <select name="lstCliente" id="lstCliente" class="form-control">
-                    <option value disabled selected>Seleccionar</option>
+                <select name="lstCliente" id="lstCliente" class="form-control  selectpicker" data-live-search="true" require="">
+                    <option value="" disabled selected>Seleccionar</option>
                     <?php foreach($aCliente as $cliente){?>
                         <?php if($cliente->idcliente==$venta->fk_idcliente):?>
                             <option selected value="<?php echo $venta->fk_idcliente;?>"><?php echo $cliente->nombre; ?></option>
                         <?php else:?>
-                        <option value="<?php echo $cliente->idcliente;?>"><?php echo $cliente->nombre;?></option>
+                            <option value="<?php echo $cliente->idcliente;?>"><?php echo $cliente->nombre;?></option>
                         <?php endif;?>
                     <?php }?>
                 </select>
             </div>
             <div class="col-6 form-group mt-1">
                 <label for="lstProducto">Producto:</label>
-                <select name="lstProducto" id="lstProducto" class="form-control">
-                    <option value disabled selected>Seleccionar</option>
+                <select name="lstProducto" id="lstProducto" class="form-control selectpicker" data-live-search="true">
+                    <option value="" disabled selected>Seleccionar</option>
                     <?php foreach ($aProducto as $producto){?>
                         <?php if($producto->idproducto==$venta->fk_idproducto):?>
                             <option selected value="<?php echo $venta->fk_idproducto;?>"><?php echo $producto->nombre; ?></option>
                         <?php else:?>
                             <option value="<?php echo $producto->idproducto;?>"><?php echo $producto->nombre;?></option>
                         <?php endif;?>
-                    <?php } ?>
-                           
+                    <?php } ?>    
                 </select>
             </div>
         </div>

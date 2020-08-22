@@ -47,6 +47,9 @@ if (isset($_POST["btnCerrar"])) {
   <!-- Page level custom scripts -->
 
   <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
+  <link rel="stylesheet" href="css/bootstrap-select.min.css">
+  <script src="js/bootstrap-select.min.js"></script>
+
 
 
 </head>
@@ -238,4 +241,5 @@ if (isset($_POST["btnCerrar"])) {
 
             </ul>
           </nav>
+  </form>
           <!-- End of Topbar -->
