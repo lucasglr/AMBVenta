@@ -35,8 +35,10 @@ if (isset($_POST["btnCerrar"])) {
 
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
-  <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"/>
+
+
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
@@ -49,7 +51,7 @@ if (isset($_POST["btnCerrar"])) {
   <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
   <link rel="stylesheet" href="css/bootstrap-select.min.css">
   <script src="js/bootstrap-select.min.js"></script>
-
+  
 
 
 </head>
