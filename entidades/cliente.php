@@ -7,6 +7,7 @@ class Cliente {
     private $telefono;
     private $correo;
     private $fecha_nac;
+    private $domicilio;
 
     public function __construct(){
 
@@ -120,9 +121,11 @@ class Cliente {
         A.nombre,
         A.telefono,
         A.correo,
-        A.fecha_nac
+        A.fecha_nac,
+        B.domicilio
         FROM
         clientes A
+        INNER JOIN domicilios B ON B.fk_idcliente = A.idcliente
         ORDER BY
         idcliente DESC";
         $resultado = $mysqli->query($sql);
@@ -136,6 +139,7 @@ class Cliente {
                 $obj->telefono = $fila["telefono"];
                 $obj->correo = $fila["correo"];
                 $obj->fecha_nac = $fila["fecha_nac"];
+                $obj->domicilio = $fila["domicilio"];
                 $aCliente[] = $obj;
 
             }

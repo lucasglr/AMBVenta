@@ -37,6 +37,7 @@ if (isset($_POST["btnCerrar"])) {
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script type="text/javascript" src="cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
   <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"/>
+  <script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer ></script>
 
 
 

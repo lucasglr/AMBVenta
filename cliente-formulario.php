@@ -4,12 +4,16 @@ include_once "entidades/cliente.php";
 include_once "entidades/domicilio.entidad.php";
 include_once "entidades/provincia.entidad.php";
 include_once "entidades/localidad.entidad.php";
+include_once "entidades/tipo_cliente.php";
 
 $pg = "Edición de cliente";
 $aMsj = array("codigo" => "", "mensaje" => "");
 
 $cliente = new Cliente();
 $cliente->cargarFormulario($_REQUEST);
+$entidadTipoCliente = new Tipo_usuario();
+$aTipoUsuario = $entidadTipoCliente->obtenerTodo();
+
 
 if ($_POST) {
   if (isset($_POST["btnGuardar"])) {
@@ -20,6 +24,7 @@ if ($_POST) {
       header("refresh:2; url=producto-formulario.php");
     } else {
       //agregar un cliente
+
       $cliente->insertar();
       $aMsj = array("mensaje" => "Cliente agregado", "codigo" => "success");
       header("refresh:2; url=producto-formulario.php");
@@ -29,18 +34,64 @@ if ($_POST) {
     $aMsj = array("mensaje" => "Cliente eliminado", "codigo" => "danger");
     header("refresh:2; url=producto-formulario.php");
   }
+  if (isset($_POST["txtTipo"])) {
+    $domicilio = new Domicilio();
+    $domicilio->eliminarPorCliente($cliente->idcliente);
+    for ($i = 0; $i < count($_POST["txtTipo"]); $i++) {
+      $domicilio->fk_idcliente = $cliente->idcliente;
+      $domicilio->fk_tipo = $_POST["txtTipo"][$i];
+      $domicilio->fk_idlocalidad =  $_POST["txtLocalidad"][$i];
+      $domicilio->domicilio = $_POST["txtDomicilio"][$i];
+      $domicilio->insertar();
+    }
+  } else if (isset($_POST["btnBorrar"])) {
+    $domicilio = new Domicilio();
+    $domicilio->eliminarPorCliente($cliente->idcliente);
+    $cliente->eliminar();
+  }
 }
+
 if (isset($_GET["id"]) && $_GET["id"] != "") {
   $cliente->obtenerPorId();
 }
-if(isset($_GET["do"]) && $_GET["do"] == "buscarLocalidad" && $_GET["id"] && $_GET["id"] > 0){
+if (isset($_GET["do"]) && $_GET["do"] == "buscarLocalidad" && $_GET["id"] && $_GET["id"] > 0) {
   $idProvincia = $_GET["id"];
   $localidad = new Localidad();
   $aLocalidad = $localidad->obtenerPorProvincia($idProvincia);
   echo json_encode($aLocalidad);
   exit;
-} else if(isset($_GET["id"]) && $_GET["id"] > 0){
+} else if (isset($_GET["id"]) && $_GET["id"] > 0) {
   $cliente->obtenerPorId();
+}
+if (isset($_GET["do"]) && $_GET["do"] == "cargarGrilla") {
+  $idCliente = $_GET['idCliente'];
+  $request = $_REQUEST;
+
+  $entidad = new Domicilio();
+  $aDomicilio = $entidad->obtenerFiltrado($idCliente);
+
+  $data = array();
+
+  if (count($aDomicilio) > 0)
+    $cont = 0;
+  for ($i = 0; $i < count($aDomicilio); $i++) {
+    $row = array();
+    $row[] = $aDomicilio[$i]->tipo;
+    $row[] = $aDomicilio[$i]->provincia;
+    $row[] = $aDomicilio[$i]->localidad;
+    $row[] = $aDomicilio[$i]->domicilio;
+    $cont++;
+    $data[] = $row;
+  }
+
+  $json_data = array(
+    "draw" => isset($request['draw']) ? intval($request['draw']) : 0,
+    "recordsTotal" => count($aDomicilio), //cantidad total de registros sin paginar
+    "recordsFiltered" => count($aDomicilio), //cantidad total de registros en la paginacion
+    "data" => $data
+  );
+  echo json_encode($json_data);
+  exit;
 }
 
 $entidadProvincia = new Provincia();
@@ -133,38 +184,32 @@ $aProvincias = $entidadProvincia->obtenerTodos();
         </div>
         <div class="container mx-auto">
           <div class="row ml-2">
-            <div class="col-10" class="form-group">
+            <div class="col-12" class="form-group">
               <label for="">Tipo</label>
-              <select name="" id="" class="form-control">
+              <select name="lstTipo" id="lstTipo" class="form-control">
                 <option value="" selected>Seleccionar</option>
-
+                <?php foreach ($aTipoUsuario as $tipo) : ?>
+                  <option value="<?php echo $tipo->idtipo_usuario; ?>" selected><?php echo $tipo->nombre; ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
           </div>
           <div class="row ml-2">
-            <div class="col-10" class="form-group">
+            <div class="col-12" class="form-group">
               <label for="">Provincia</label>
               <select name="lstProvincia" id="lstProvincia" onchange="fBuscarLocalidad();" class="form-control">
-                    <option value="" disabled selected>Seleccionar</option>
-                    <?php foreach($aProvincias as $prov): ?>
-                        <option value="<?php echo $prov->idprovincia; ?>"><?php echo $prov->nombre; ?></option>
-                    <?php endforeach; ?>
-                </select>
+                <option value="" disabled selected>Seleccionar</option>
+                <?php foreach ($aProvincias as $prov) : ?>
+                  <option value="<?php echo $prov->idprovincia; ?>"><?php echo $prov->nombre; ?></option>
+                <?php endforeach; ?>
+              </select>
 
             </div>
           </div>
           <div class="row ml-2">
             <div class="col-12" class="form-group">
               <label for="">Localidad</label>
-              <select name="" id="" class="form-control">
-                <option value="" selected>Seleccionar</option>
-              </select>
-            </div>
-          </div>
-          <div class="row ml-2">
-            <div class="col-12" class="form-group">
-              <label for="">Provincia</label>
-              <select name="" id="" class="form-control">
+              <select name="lstLocalidades" id="lstLocalidades" class="form-control">
                 <option value="" selected>Seleccionar</option>
               </select>
             </div>
@@ -172,15 +217,13 @@ $aProvincias = $entidadProvincia->obtenerTodos();
           <div class="row ml-2">
             <div class="col-12" class="form-group">
               <label for="">Direccion</label>
-              <select name="" id="" class="form-control">
-                <option value="" selected>Seleccionar</option>
-              </select>
+              <input type="text" class="form-control" id="txtDireccion" name="txtDireccion">
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" onclick="cargarGrilla();">Cargar Datos</button>
         </div>
       </div>
     </div>
@@ -189,24 +232,69 @@ $aProvincias = $entidadProvincia->obtenerTodos();
 </div>
 <script>
   $(document).ready(function() {
-    $('#grilla').DataTable();
+    var idCliente = '<?php echo isset($cliente) && $cliente->idcliente > 0 ? $cliente->idcliente : 0 ?>';
+    if (idCliente != 0) {
+      var dataTable = $('#grilla').DataTable({
+        "processing": true,
+        "serverSide": false,
+        "bFilter": false,
+        "bInfo": true,
+        "bSearchable": false,
+        "paging": false,
+        "pageLength": 25,
+        "order": [
+          [0, "asc"]
+        ],
+        "ajax": "cliente-formulario.php?do=cargarGrilla&idCliente=" + idCliente
+      });
+
+    }
+
   });
 
-  function fBuscarLocalidad(){
-            idProvincia = $("#lstProvincia option:selected").val();
+  function cargarGrilla() {
+    var grilla = $('#grilla').DataTable();
+    grilla.row.add([
+      $("#lstTipo option:selected").text() + "<input type='hidden' name='txtTipo[]' value='" + $("#lstTipo option:selected").val() + "'>",
+      $("#lstProvincia option:selected").text() + "<input type='hidden' name='txtProvincia[]' value='" + $("#lstProvincia option:selected").val() + "'>",
+      $("#lstLocalidades option:selected").text() + "<input type='hidden' name='txtLocalidad[]' value='" + $("#lstLocalidades option:selected").val() + "'>",
+      $("#txtDireccion").val() + "<input type='hidden' name='txtDomicilio[]' value='" + $("#txtDireccion").val() + "'>"
+    ]).draw();
+    $('#modalDomicilio').modal('toggle');
+    limpiarFormulario();
+  }
 
-            $.ajax({
-                type: "GET",
-                url: "cliente-formulario.php?do=buscarLocalidad",
-                data: { id:idProvincia },
-                async: true,
-                dataType: "json",
-                success: function (respuesta) {
-              		
-                }
-            });
-        }
+  function limpiarFormulario() {
+    $("#lstTipo").val("");
+    $("#lstProvincia").val("");
+    $("#lstLocalidades").val("");
+    $("#txtDireccion").val("");
+  }
 
+  function fBuscarLocalidad() {
+    idProvincia = $("#lstProvincia option:selected").val();
+
+    $.ajax({
+      type: "GET",
+      url: "cliente-formulario.php?do=buscarLocalidad",
+      data: {
+        id: idProvincia
+      },
+      async: true,
+      dataType: "json",
+      success: function(respuesta) {
+        let opciones = '<option value="0" selected disable>seleccionar</option>';
+        const resultado = respuesta.reduce(function(acumulador, valor) {
+          const {
+            nombre,
+            idlocalidad
+          } = valor;
+          return acumulador + `<option value="${idlocalidad}">${nombre}</option>`
+        }, opciones);
+        $('#lstLocalidades').empty().append(resultado);
+      }
+    });
+  }
 </script>
 
 <?php include("footer.php"); ?>

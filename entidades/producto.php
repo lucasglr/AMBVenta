@@ -152,6 +152,21 @@ class Producto{
             return $aProducto;
         }
     }
+    public function obtenerPrecioPorId($id){
+        $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
+        $sql="SELECT precio FROM productos WHERE idproducto = $id";
+        $resultado = $mysqli->query($sql);
+        if($resultado){
+            $precio=array();
+            while($fila=$resultado->fetch_assoc()){
+                $precio['precio']= $fila['precio'];
+            }
+            return $precio;
+        }
+      
+        
+
+    }
     
 
 }

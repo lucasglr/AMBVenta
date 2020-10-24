@@ -1,10 +1,12 @@
 <?php
     include_once "config.php";
     include_once "entidades/cliente.php";
+    include_once "entidades/domicilio.entidad.php";
     $pg="Listado de clientes";
 
     $cliente = new Cliente();
     $aCliente = $cliente->obtenerTodos();
+
     
 ?>
 
@@ -41,7 +43,7 @@
                                     <td><?php echo $cliente->nombre; ?></td>
                                     <td><?php echo $cliente->fecha_nac; ?></td>
                                     <td><?php echo $cliente->correo; ?></td>
-                                    <td></td>
+                                    <td><?php echo $cliente->domicilio;?></td>
                                     <td><a href="cliente-formulario.php?id=<?php echo $cliente->idcliente;?>"><i class="fas fa-search"></a></td>
             
                                 </tr>

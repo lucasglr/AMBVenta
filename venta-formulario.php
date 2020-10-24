@@ -41,6 +41,15 @@ if(isset($_GET["id"])&&$_GET["id"]=!""){
 }
 
 
+if(isset($_GET['idproducto']) && $_GET["do"]=='buscarPrecio' && $_GET["idproducto"] > 0){
+   
+    $idProducto = $_GET['idproducto'];
+    $producto = new Producto();
+    $aProducto=$producto-> obtenerPrecioPorId($idProducto);
+    echo json_encode($aProducto);
+    exit;
+}
+
 ?>
 
 <?php include("header.php");?>
@@ -124,4 +133,28 @@ if(isset($_GET["id"])&&$_GET["id"]=!""){
     </form>
         
 </div>
+<script>
+$('#lstProducto').change(function(event){
+    let idproducto = event.target.value;
+    $.ajax({
+        type:"GET",
+        url : "venta-formulario.php?do=buscarPrecio",
+        data:{
+            idproducto:idproducto
+        },
+        async: true,
+        dataType: "json",
+        success: function(respuesta) {
+            let precio = respuesta.precio;
+            $('#txtPrecioUnitario').prop('value',precio);
+        }
+    });
+});
+$('#txtCantidad').change(function(){
+    let precio =$('#txtPrecioUnitario').val();
+    let cantidad = $('#txtCantidad').val();
+    let total = precio * cantidad;
+    $('#txtTotal').prop('value',total);
+})
+</script>
 <?php include("footer.php");?>
