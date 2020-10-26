@@ -125,11 +125,11 @@ $aProvincias = $entidadProvincia->obtenerTodos();
     <div class="row">
       <div class="col-6 form-group mt-3">
         <label for="txtNombre">Nombre:</label>
-        <input type="text" name="txtNombre" class="form-control" value="<?php echo $cliente->nombre; ?>">
+        <input type="text" name="txtNombre" class="form-control" value="<?php echo $cliente->nombre; ?>" required>
       </div>
       <div class="col-6 form-group mt-3">
         <label for="txtCuit">CUIT:</label>
-        <input type="text" name="txtCuit" class="form-control" value="<?php echo $cliente->cuit; ?>">
+        <input type="text" name="txtCuit" class="form-control" value="<?php echo $cliente->cuit; ?>" required>
       </div>
     </div>
     <div class="row">

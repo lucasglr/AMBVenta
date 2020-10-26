@@ -149,7 +149,7 @@ if($_POST){
                     <?php if (isset($_GET["id"])&&$_GET["id"]=!""):?>
                         <img src="<?php echo "img/".$producto->imagen; ?>" alt="" class="img-thumbnail" width="60px">
                     <?php endif;?>
-                    <input type="file" class="form-control-file mt-2" name="fileImagen" value="<?php echo $producto->imagen ?>" required>
+                    <input type="file" class="form-control-file mt-2" name="fileImagen" value="<?php echo $producto->imagen ?>" >
                 </div>
             </div>
         </form>
