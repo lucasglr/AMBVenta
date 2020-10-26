@@ -41,7 +41,7 @@
                                 <tr>
                                     <td><?php echo $cliente->cuit; ?></td>
                                     <td><?php echo $cliente->nombre; ?></td>
-                                    <td><?php echo $cliente->fecha_nac; ?></td>
+                                    <td><?php echo date("d/m/Y", strtotime($cliente->fecha_nac)); ?></td>
                                     <td><?php echo $cliente->correo; ?></td>
                                     <td><?php echo $cliente->domicilio;?></td>
                                     <td><a href="cliente-formulario.php?id=<?php echo $cliente->idcliente;?>"><i class="fas fa-search"></a></td>
