@@ -103,11 +103,11 @@ if($_POST){
             <div class="row">
                 <div class="col-6 form-group mt-3">
                     <label for="txtNombre">Nombre:</label>
-                    <input type="text" name="txtNombre" class="form-control" value="<?php echo $producto->nombre?>">
+                    <input type="text" name="txtNombre" class="form-control" value="<?php echo $producto->nombre?>" required>
                 </div>
                 <div class="col-6 form-group mt-3">
                     <label for="lstTipoProducto">Tipo de producto:</label>
-                    <select name="lstTipoProducto" id="lstTipoProducto" class="form-control" value="<?php?>">
+                    <select name="lstTipoProducto" id="lstTipoProducto" class="form-control" value="" required>
                             <option value disabled selected>Seleccionar</option>
                             <?php foreach ($aTipoProducto as $tipoProducto):?>
                                 <?php if($tipoProducto->idtipoproducto==$producto->fk_idtipoproducto):?>
@@ -122,17 +122,17 @@ if($_POST){
             <div class="row">
                     <div class="col-6 form-group mt-1">
                         <label for="txtCantidad">Cantidad:</label>
-                        <input type="text" name="txtCantidad" class="form-control" value="<?php echo $producto->cantidad;?>">
+                        <input type="text" name="txtCantidad" class="form-control" value="<?php echo $producto->cantidad;?>" required>
                     </div>
                     <div class="col-6 form-group mt-1">
                         <label for="txtPrecio">Precio:</label>
-                        <input type="text" name="txtPrecio" class="form-control" value="<?php echo $producto->precio;?>">
+                        <input type="text" name="txtPrecio" class="form-control" value="<?php echo $producto->precio;?>" required>
                     </div>
             </div>
             <div class="row">
                     <div class="col-12 form-group mt-3">
                         <label for="txtDescripcion">Descripción:</label>
-                        <textarea type="text" name="txtDescripcion" id="txtDescripcion" ><?php  echo $producto->descripcion;?></textarea> 
+                        <textarea type="text" name="txtDescripcion" id="txtDescripcion"><?php  echo $producto->descripcion;?></textarea> 
                         <script>
                             ClassicEditor
                                 .create( document.querySelector( '#txtDescripcion' ) )
@@ -144,12 +144,12 @@ if($_POST){
             </div>
             <div class="row">
                 <div class="col-12">
-                    <label for="fileImagen">Imagen:</label>
+                    <label for="fileImagen" >Imagen:</label>
                     <br>
                     <?php if (isset($_GET["id"])&&$_GET["id"]=!""):?>
                         <img src="<?php echo "img/".$producto->imagen; ?>" alt="" class="img-thumbnail" width="60px">
                     <?php endif;?>
-                    <input type="file" class="form-control-file mt-2" name="fileImagen" value="<?php echo $producto->imagen ?>">
+                    <input type="file" class="form-control-file mt-2" name="fileImagen" value="<?php echo $producto->imagen ?>" required>
                 </div>
             </div>
         </form>
