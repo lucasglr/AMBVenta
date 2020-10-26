@@ -15,6 +15,7 @@ $entidadTipoCliente = new Tipo_usuario();
 $aTipoUsuario = $entidadTipoCliente->obtenerTodo();
 
 
+
 if ($_POST) {
   if (isset($_POST["btnGuardar"])) {
     if (isset($_GET["id"]) && $_GET['id'] > 0) {
@@ -69,6 +70,7 @@ if (isset($_GET["do"]) && $_GET["do"] == "cargarGrilla") {
 
   $entidad = new Domicilio();
   $aDomicilio = $entidad->obtenerFiltrado($idCliente);
+ 
 
   $data = array();
 
@@ -83,7 +85,7 @@ if (isset($_GET["do"]) && $_GET["do"] == "cargarGrilla") {
     $cont++;
     $data[] = $row;
   }
-
+  
   $json_data = array(
     "draw" => isset($request['draw']) ? intval($request['draw']) : 0,
     "recordsTotal" => count($aDomicilio), //cantidad total de registros sin paginar
@@ -93,6 +95,9 @@ if (isset($_GET["do"]) && $_GET["do"] == "cargarGrilla") {
   echo json_encode($json_data);
   exit;
 }
+
+
+
 
 $entidadProvincia = new Provincia();
 $aProvincias = $entidadProvincia->obtenerTodos();
@@ -233,7 +238,7 @@ $aProvincias = $entidadProvincia->obtenerTodos();
 <script>
   $(document).ready(function() {
     var idCliente = '<?php echo isset($cliente) && $cliente->idcliente > 0 ? $cliente->idcliente : 0 ?>';
-    if (idCliente != 0) {
+    if (idCliente != 0 ) {
       var dataTable = $('#grilla').DataTable({
         "processing": true,
         "serverSide": false,

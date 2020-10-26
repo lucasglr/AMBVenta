@@ -48,20 +48,20 @@ class Domicilio{
            2 => 'C.nombre',
            3 => 'A.domicilio'
             );
-        $sql = "SELECT 
-                    A.iddomicilio,
-                    A.fk_tipo,
-                    B.nombre AS tipo,
-                    A.fk_idlocalidad,
-                    C.nombre AS localidad,
-                    D.idprovincia,
-                    D.nombre AS provincia,
-                    A.domicilio
-                    FROM domicilios A
-                    INNER JOIN tipo_domicilios B ON A.fk_tipo = B.idtipo
-                    INNER JOIN localidades C ON C.idlocalidad = A.fk_idlocalidad
-                    INNER JOIN provincias D ON D.idprovincia = C.fk_idprovincia
-                WHERE 1=1 AND A.fk_idcliente = $idCliente 
+        $sql = " SELECT 
+        A.iddomicilio,
+        A.fk_tipo,
+        B.nombre AS tipo,
+        A.fk_idlocalidad,
+        C.nombre AS localidad,
+        D.idprovincia,
+        D.nombre AS provincia,
+        A.domicilio
+        FROM domicilios A
+        INNER JOIN tipos_usuarios B ON A.fk_tipo = B.idtipo_usuario
+        INNER JOIN localidades C ON C.idlocalidad = A.fk_idlocalidad
+        INNER JOIN provincias D ON D.idprovincia = C.fk_idprovincia
+        WHERE 1=1 AND A.fk_idcliente =  $idCliente 
                 ";
 
         //Realiza el filtrado
