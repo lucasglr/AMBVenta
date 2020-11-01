@@ -195,7 +195,15 @@ class Venta {
         }
     }
 
-
+    function consultarVentas($idCliente){
+        $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
+        $sql = "SELECT COUNT(idventa)as venta FROM ventas WHERE fk_idcliente = $idCliente";
+        $resultado=$mysqli->query($sql);
+        if($fila=$resultado->fetch_assoc()){
+            $venta = $fila['venta'];
+            return $venta;
+        }
+    }
 
 }
 ?>

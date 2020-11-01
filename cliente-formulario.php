@@ -1,6 +1,7 @@
 <?php
 include_once "config.php";
 include_once "entidades/cliente.php";
+include_once "entidades/venta.php";
 include_once "entidades/domicilio.entidad.php";
 include_once "entidades/provincia.entidad.php";
 include_once "entidades/localidad.entidad.php";
@@ -22,18 +23,34 @@ if ($_POST) {
       //actualizar un cliente
       $cliente->actualizar();
       $aMsj = array("mensaje" => "Cliente actualizado", "codigo" => "primary");
-      header("refresh:2; url=producto-formulario.php");
+      header("refresh:2; url=cliente-formulario.php");
     } else {
       //agregar un cliente
 
       $cliente->insertar();
       $aMsj = array("mensaje" => "Cliente agregado", "codigo" => "success");
-      header("refresh:2; url=producto-formulario.php");
+      header("refresh:2; url=cliente-formulario.php");
     }
   } elseif (isset($_POST["btnBorrar"]) && isset($_GET["id"])) {
-    $cliente->eliminar();
-    $aMsj = array("mensaje" => "Cliente eliminado", "codigo" => "danger");
-    header("refresh:2; url=producto-formulario.php");
+    $idCliente=$_GET['id'];
+    $entidadVenta= new Venta();
+    $venta=$entidadVenta->consultarVentas($idCliente);
+   
+    if(!$venta==0){
+     
+      $aMsj = array("mensaje" => "El cliente tiene ventas asignadas!", "codigo" => "danger");
+      header("refresh:2; url=cliente-formulario.php");
+    }else{
+     
+      $domicilio = new Domicilio();
+      $domicilio->eliminarPorCliente($cliente->idcliente);
+      $cliente->eliminar();
+      $aMsj = array("mensaje" => "Cliente eliminado", "codigo" => "danger");
+      header("refresh:2; url=cliente-formulario.php");
+    }
+
+   
+    
   }
   if (isset($_POST["txtTipo"])) {
     $domicilio = new Domicilio();
@@ -45,11 +62,8 @@ if ($_POST) {
       $domicilio->domicilio = $_POST["txtDomicilio"][$i];
       $domicilio->insertar();
     }
-  } else if (isset($_POST["btnBorrar"])) {
-    $domicilio = new Domicilio();
-    $domicilio->eliminarPorCliente($cliente->idcliente);
-    $cliente->eliminar();
-  }
+  } 
+  
 }
 
 if (isset($_GET["id"]) && $_GET["id"] != "") {
